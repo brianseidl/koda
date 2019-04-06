@@ -1,0 +1,9 @@
+{% extends "koda/base.html" %}
+{% block leftnav %}
+	<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+		<h3 class="w3-bar-item">Rooms</h3>
+		{% for room in rooms %}
+			<a href="{{ room.id }}" class="w3-bar-item w3-button">{{ room.name }}</a>
+		{% endfor %}
+	</div>
+{% endblock %}

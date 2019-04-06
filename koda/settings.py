@@ -27,17 +27,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ASGI_APPLICATION = "koda.routing.application"
 
 # Application definition
 
 INSTALLED_APPS = [
-    'communications.apps.CommunicationsConfig',
+    'rooms.apps.RoomsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 ]
 
 MIDDLEWARE = [
