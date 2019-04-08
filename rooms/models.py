@@ -16,9 +16,13 @@ class Room(models.Model):
     @property
     def members(self):
         return self.users.all()
-    
+
+    def last_10_messages(self):
+        return self.message_set.order_by('-timestamp').all()[:10]
+
     def __str__(self):
         return self.name
+
 
 class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -27,7 +31,8 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.author + '-' + self.content
+        return self.author.username
+
 
 class RoomUsers(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

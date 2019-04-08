@@ -1,55 +1,73 @@
 {% extends "rooms/base.html" %}
 {% load static %}
 {% block content %}
-    <div style="margin-left:25%">
-        <div class="w3-container">
-            <h1>Detail View of Room {{ room_name }}</h1>
-            <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
-            <input id="chat-message-input" type="text" size="100"/><br/>
-            <input id="chat-message-submit" type="button" value="Send"/>
-            <script src="{% static 'reconnecting-websocket.js' %}"></script>
-            <script>
-                var roomName = "{{ room_name }}";
-                var username = "{{ username }}";
-                var room_id = "{{ room_id }}";
+  <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
+    <h1>Detail View of Room {{ room_name }}</h1>
+    <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
+    <input id="chat-message-input" type="text" size="100"/><br/>
+    <input id="chat-message-submit" type="button" value="Send"/>
+    <script src="{% static 'reconnecting-websocket.js' %}"></script>
+    <script>
+      var roomName = "{{ room_name }}";
+      var username = "{{ username }}";
+      var room_id = "{{ room_id }}";
 
-                var chatSocket = new ReconnectingWebSocket(
-                    'ws://' + window.location.host +
-                    '/ws/room/' + room_id + '/');
-                console.log("we fucking made it");
+      var chatSocket = new ReconnectingWebSocket(
+        'ws://' + window.location.host +
+        '/ws/room/' + room_id + '/');
 
-                chatSocket.onmessage = function(e) {
-                    console.log('trying to recieve message');
-                    var data = JSON.parse(e.data);
-                    var message = data['message'];
-                    console.log(message);
-                    document.querySelector('#chat-log').value += (message.content + '\n');
-                };
+      chatSocket.onopen = function(e) {
+        fetchMessages();
+      }
 
-                chatSocket.onclose = function(e) {
-                    console.error('Chat socket closed unexpectedly');
-                };
+      chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        if (data['command'] === 'messages') {
+          for (let i=0; i<data['messages'].length; i++) {
+            createMessage(data['messages'][i]);
+          }
+        } else if (data['command'] === 'new_message'){
+          createMessage(data['message']);
+        }
+      };
 
-                document.querySelector('#chat-message-input').focus();
-                document.querySelector('#chat-message-input').onkeyup = function(e) {
-                    if (e.keyCode === 13) {  // enter, return
-                        document.querySelector('#chat-message-submit').click();
-                    }
-                };
+      chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+      };
 
-                document.querySelector('#chat-message-submit').onclick = function(e) {
-                    var messageInputDom = document.querySelector('#chat-message-input');
-                    var message = messageInputDom.value;
-                    chatSocket.send(JSON.stringify({
-                        'message': message,
-                        'command': 'new_message',
-                        'from': username,
-                        'room_name': roomName
-                    }));
-                    console.log('attempting to send message');
-                    messageInputDom.value = '';
-                };
-            </script>
-        </div>
-    </div>
+      document.querySelector('#chat-message-input').focus();
+      document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+          document.querySelector('#chat-message-submit').click();
+        }
+      };
+
+      document.querySelector('#chat-message-submit').onclick = function(e) {
+        var messageInputDom = document.querySelector('#chat-message-input');
+        var message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+          'message': message,
+          'command': 'new_message',
+          'from': username,
+          'room_name': roomName
+        }));
+        console.log('attempting to send message');
+        messageInputDom.value = '';
+      };
+
+      function fetchMessages() {
+        chatSocket.send(JSON.stringify({
+          'command': 'fetch_messages',
+          'room_name': roomName,
+        }));
+      }
+
+      function createMessage(data) {
+        console.log(data);
+        var message = data['content'];
+        document.querySelector('#chat-log').value += (message + '\n');
+      }
+
+    </script>
+  </div>
 {% endblock %}
