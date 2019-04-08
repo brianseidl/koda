@@ -11,8 +11,6 @@ class ChatConsumer(WebsocketConsumer):
         room_name = data['room_name']
         room = Room.objects.filter(name=room_name)[0]
         messages = room.last_10_messages()
-        for m in messages:
-            print(m)
         content = {
             'command': 'messages',
             'messages': self.messages_to_json(messages)
@@ -78,7 +76,6 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def send_message(self, message):
-        print(message)
         self.send(text_data=json.dumps(message))
 
     def chat_message(self, event):
