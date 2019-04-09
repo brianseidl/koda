@@ -16,8 +16,14 @@
       var username = "{{ username }}";
       var room_id = "{{ room_id }}";
 
+      if (window.location.protocol == "https:") {
+        var ws_scheme = "wss://";
+      } else {
+        var ws_scheme = "ws://"
+      };
+
       var chatSocket = new ReconnectingWebSocket(
-        'ws://' + window.location.host +
+        ws_scheme + window.location.host +
         '/ws/room/' + room_id + '/');
 
       chatSocket.onopen = function(e) {
