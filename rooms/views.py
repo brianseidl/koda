@@ -2,8 +2,9 @@ from .models import Room, Message
 from django.contrib.auth.models import User
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from koda.views import BaseView
 
-class BaseRoomView(LoginRequiredMixin, TemplateView):
+class BaseRoomView(LoginRequiredMixin, BaseView):
 
     template_name = "rooms/base.html"
 
