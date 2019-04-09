@@ -1,1 +1,1 @@
-web: daphne chat.asgi:application
+web: daphne koda.asgi:application
