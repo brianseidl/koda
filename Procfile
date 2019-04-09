@@ -1,2 +1,2 @@
-web: daphne -b 0.0.0.0 -p $PORT koda.asgi:application
+web: daphne -b 0.0.0.0 -p $PORT koda.asgi:application -v2
 worker: python manage.py runworker -v2
