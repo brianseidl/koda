@@ -76,8 +76,9 @@
         var message = data['content'];
         var chatLog = document.getElementById("chat-log-v2");//+= (message + '\n');
         var newChatElement = document.createElement("div");
-        newChatElement.setAttribute("class", "w3-container");
-        newChatElement.innerHTML = "<span><p>" + data["author"] + ": " + data["content"] + "</p></span>";
+        newChatElement.setAttribute("class", "w3-display-container");
+        newChatElement.setAttribute("style", "height:55px;")
+        newChatElement.innerHTML = "<p class=\"w3-left\">" + data["author"] + ": " + data["content"] + "</p>" + "<p class=\"w3-right\">" + data["timestamp"] + "</p>";
         document.getElementById("chat-log-v2").appendChild(newChatElement);
         chatLog.scrollTo(0,chatLog.scrollHeight);
       }
