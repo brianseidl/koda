@@ -1,1 +1,1 @@
-web: gunicorn koda.wsgi --log-file - && web: daphne django_channels_heroku.asgi:application --port $PORT --bind 0.0.0.0
+web: gunicorn koda.asgi:asgi_channel -b 0.0.0.0:$PORT -w 4 -k uvicorn.workers.UvicornWorker — forwarded-allow-ips “*”
