@@ -7,7 +7,7 @@ from django.db import models
 
 class Room(models.Model):
     name = models.CharField(max_length=100)
-    users = models.ManyToManyField(User, through='RoomUsers')
+    users = models.ManyToManyField(User, through='RoomUser')
 
     def add_user(self, user):
         cu = RoomUsers(user=user, room=self)
@@ -18,7 +18,7 @@ class Room(models.Model):
         return self.users.all()
 
     def last_10_messages(self):
-        return self.message_set.order_by('-timestamp').all()[:10]
+        return self.message_set.order_by('-timestamp').all()
 
     def __str__(self):
         return self.name
@@ -31,9 +31,12 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.author.username
+        return str(self.author) + ": " + str(self.content)[0:20]
 
 
-class RoomUsers(models.Model):
+class RoomUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user) + "-" + str(self.room)
