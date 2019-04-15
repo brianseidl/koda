@@ -25,7 +25,7 @@ SECRET_KEY = 'iz9j&g&3si#0wb6=z(_ue$+at#8%#c-a06s93ny!9t=ma4k_#w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['koda-app.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['koda-app.herokuapp.com', 'localhost', '127.0.0.1']
 
 ASGI_APPLICATION = "koda.routing.application"
 
@@ -138,16 +138,10 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-            #"hosts": [('127.0.0.1', 6379)], #uncomment for local dev
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
-
-# Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
