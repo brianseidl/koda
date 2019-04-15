@@ -1,1 +1,1 @@
-web: export DJANGO_SETTINGS_MODULE=koda.settings.prod && daphne koda.asgi:application --port $PORT --bind 0.0.0.0
+web: daphne koda.asgi:application --port $PORT --bind 0.0.0.0
