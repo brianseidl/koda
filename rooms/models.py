@@ -21,17 +21,7 @@ class Room(models.Model):
     def last_10_messages(self):
         return self.message_set.order_by('-timestamp').all()
 
-    @property
-    def online_users(self):
-        # TODO (brian): This is so disgusting but it works I guess
-        return self._online_question()[0]
-
-    @property
-    def offline_users(self):
-        # TODO (brian): This is so disgusting but it works I guess
-        return self._online_question()[1]
-
-    def _online_question(self):
+    def who_is_online(self):
         # TODO (brian): This is so disgusting but it works I guess
         weird_user_objects = OnlineUserActivity.get_user_activities()
         all_online_users = [item.user for item in weird_user_objects]
