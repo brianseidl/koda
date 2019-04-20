@@ -10,12 +10,13 @@ constantly==15.1.0
 daphne==2.3.0
 dj-database-url==0.5.0
 Django==2.2
+django-online-users==0.3
 hiredis==1.0.0
 hyperlink==19.0.0
 idna==2.8
 incremental==17.5.0
 msgpack==0.6.1
-psycopg2==2.8.2
+psycopg2-binary==2.8.2
 PyHamcrest==1.9.0
 pytz==2019.1
 six==1.12.0

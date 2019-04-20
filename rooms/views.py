@@ -30,4 +30,5 @@ class DetailRoomView(BaseRoomView):
         context["room_id"] = kwargs["room_id"]
         context["room_name"] = self.room.name
         context["username"] = self.request.user.username
+        context["online_users"], context["offline_users"] = self.room.who_is_online()
         return context
