@@ -4,6 +4,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
 from .models import Message, Room
+import re
 
 class ChatConsumer(WebsocketConsumer):
 
@@ -24,13 +25,18 @@ class ChatConsumer(WebsocketConsumer):
         room = Room.objects.filter(name=room_name)[0]
         message = Message.objects.create(
             author=author_user,
-            content=data['message'],
+            content=self.cleanhtml(data['message']),
             room=room)
         content = {
             'command': 'new_message',
             'message': self.message_to_json(message)
         }
         return self.send_chat_message(content)
+
+    def cleanhtml(self, raw_html):
+        cleanr = re.compile('<.*?>')
+        cleantext = re.sub(cleanr, '', raw_html)
+        return cleantext
 
     def messages_to_json(self, messages):
         return [self.message_to_json(message) for message in messages][::-1]

@@ -25,7 +25,7 @@ SECRET_KEY = 'iz9j&g&3si#0wb6=z(_ue$+at#8%#c-a06s93ny!9t=ma4k_#w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['koda-app.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['koda-app.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
 
 ASGI_APPLICATION = "koda.routing.application"
 
