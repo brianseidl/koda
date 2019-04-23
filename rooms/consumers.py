@@ -45,8 +45,15 @@ class ChatConsumer(WebsocketConsumer):
         return {
             'author': message.author.username,
             'content': message.content,
-            'timestamp': str(message.timestamp)
+            'timestamp': str(message.timestamp),
+            'doWeAppendBoss': self.append_or_nah(message)
         }
+
+    def append_or_nah(self, message):
+        room = message.room
+        last_message = room.last_message()[0]
+        diff = last_message.timestamp - message.timestamp
+        return (diff.total_seconds() < 10*60) and (message.author == last_message.author)
 
     commands = {
         'fetch_messages': fetch_messages,

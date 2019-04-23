@@ -18,8 +18,12 @@ class Room(models.Model):
     def members(self):
         return self.users.all()
 
+    # TODO (brian): change name for method to get_all_messages
     def last_10_messages(self):
         return self.message_set.order_by('-timestamp').all()
+
+    def last_message(self):
+        return self.message_set.order_by('-timestamp').all()[:1]
 
     def who_is_online(self):
         # TODO (brian): This is so disgusting but it works I guess

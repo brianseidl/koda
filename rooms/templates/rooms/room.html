@@ -1,6 +1,12 @@
 {% extends "rooms/base.html" %}
 {% load static %}
 
+{% block scripts %}
+  {{ block.super }}
+  <script src="{% static 'lib/reconnecting-websocket.js' %}"></script>
+   <script src="{% static 'lib/jquery-3.4.0.min.js' %}"></script>
+{% endblock %}
+
 {% block leftnav %}
   <div class="w3-sidebar w3-bar-block w3-light-gray" style="z-index: 3; width: 270px; display: block;" id="mySidebar">
     <div id="menuTut" class="myMenu" style="display: block;">
@@ -49,8 +55,10 @@
     <div class="w3-section">
       <input id="chat-message-input" class="w3-input w3-border" type="text" placeholder="new message" />
     </div>
-    <script src="{% static 'reconnecting-websocket.js' %}"></script>
     <script type="text/javascript">
+      // TODO (brian): move this sucker to a js file
+      // while still being able to pass in context data
+
       var roomName = "{{ room_name }}";
       var username = "{{ username }}";
       var room_id = "{{ room_id }}";
@@ -73,10 +81,10 @@
         var data = JSON.parse(e.data);
         if (data['command'] === 'messages') {
           for (let i=0; i<data['messages'].length; i++) {
-            createMessage(data['messages'][i]);
+            displayMessage(data['messages'][i]);
           }
         } else if (data['command'] === 'new_message'){
-          createMessage(data['message']);
+          displayMessage(data['message']);
         }
       };
 
@@ -111,15 +119,39 @@
         }));
       }
 
-      function createMessage(data) {
+      function displayMessage(data){
+        if (data["doWeAppendBoss"]){
+          appendToPrevious(data);
+          console.log("append");
+        } else {
+          displayNewMessage(data);
+          console.log("new message");
+        }
+      }
+      /**
+      function doWeAppendBoss(data){
+        return data["author"] == $(".author:last").find("b").html();
+      }*/
+
+      function appendToPrevious(data){
+        var prev_message = $(".message:last");
+        prev_message.append("<br>" + data["content"]);
+        console.log(prev_message);
+      }
+
+      function displayNewMessage(data) {
         var message = data['content'];
         var chatLog = document.getElementById("chat-log-v2");//+= (message + '\n');
         var newChatElement = document.createElement("div");
-        newChatElement.setAttribute("class", "w3-display-container");
-        newChatElement.setAttribute("style", "height:55px;")
-        newChatElement.innerHTML = "<p class=\"w3-left\">" + data["author"] + ": " + data["content"] + "</p>" + "<p class=\"w3-right\">" + data["timestamp"] + "</p>";
+        newChatElement.setAttribute("class", "w3-container");
+        newChatElement.setAttribute("style", "min-height:65px;");
+        newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
+          "<div class=\"w3-right w3-show-inline-block\">" + data["timestamp"] + "</div>" +
+          "<div class=\"w3-container w3-leftbar message\" style=\"overflow:hidden;\">" + data["content"] + "</div>";
         document.getElementById("chat-log-v2").appendChild(newChatElement);
-        chatLog.scrollTo(0,chatLog.scrollHeight);
+
+        // scroll to bottom every time a new message is added to bottom
+        chatLog.scrollTo(0, chatLog.scrollHeight);
       }
 
     </script>

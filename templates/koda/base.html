@@ -1,26 +1,27 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <meta charset="utf-8">
     <title>KODA</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	{% load static %}
-  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-green.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}"/>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-green.css">
+  {% block scripts %}{% endblock %}
 </head>
 <body>
 
 <!--Top-->
 <div class="w3-top">
   <div class="w3-row w3-white w3-padding">
-  	<div class="w3-half" style="margin:4px 0 6px 0"><img src="{% static 'koda.png' %}"></div>
+    <div class="w3-half" style="margin:4px 0 6px 0"><img src="{% static 'images/koda.png' %}"></div>
     <div class="w3-half w3-margin-top w3-wide"><div class="w3-right">KNOCKOFF DISCORD APPLICATION</div></div>
   </div>
   <div class="w3-bar w3-theme w3-large" style="z-index:4;">
     <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'homepage' %}">HOME</a>
-  	<a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:index' %}">ROOMS</a>
-  	<a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="#">DIRECT MESSAGES</a>
+    <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:index' %}">ROOMS</a>
+    <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="#">DIRECT MESSAGES</a>
     {% if auth_user %}
       <a class="w3-bar-item w3-right w3-button w3-hover-white w3-padding-16" href="{% url 'logout' %}">LOGOUT</a>
       <span class="w3-bar-item w3-right w3-padding-16" style="text-transform:uppercase;">WELCOME {{ user.first_name }}</span>
