@@ -51,8 +51,9 @@ class ChatConsumer(WebsocketConsumer):
 
     def append_or_nah(self, message):
         room = message.room
-        last_message = room.last_2_messages()[1]
-        if not last_message:
+        try:
+            last_message = room.last_2_messages()[1]
+        except:
             return False
         diff = last_message.timestamp - message.timestamp
         return ((diff.total_seconds() < 10*60) and (message.author == last_message.author))
