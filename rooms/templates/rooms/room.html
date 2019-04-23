@@ -147,7 +147,7 @@
         var chatLog = document.getElementById("chat-log-v2");//+= (message + '\n');
         var newChatElement = document.createElement("div");
         newChatElement.setAttribute("class", "w3-container");
-        newChatElement.setAttribute("style", "min-height:65px;");
+        newChatElement.setAttribute("style", "min-height:50px;");
         newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
           "<div class=\"w3-right w3-show-inline-block\">" + data["timestamp"] + "</div>" +
           "<div class=\"w3-container w3-leftbar message\" style=\"overflow:hidden;\">" + data["content"] + "</div>";
