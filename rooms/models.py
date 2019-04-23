@@ -22,8 +22,8 @@ class Room(models.Model):
     def last_10_messages(self):
         return self.message_set.order_by('-timestamp').all()
 
-    def last_message(self):
-        return self.message_set.order_by('-timestamp').all()[:1]
+    def last_2_messages(self):
+        return self.message_set.order_by('-timestamp').all()[:2]
 
     def who_is_online(self):
         # TODO (brian): This is so disgusting but it works I guess
