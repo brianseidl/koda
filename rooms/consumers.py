@@ -57,7 +57,9 @@ class ChatConsumer(WebsocketConsumer):
             print("Hey look, we made it here!")
             return False
         diff = last_message.timestamp - message.timestamp
-        return ((diff.total_seconds() < 60) and (message.author == last_message.author))
+        # print((last_message.timestamp, message.timestamp, diff.total_seconds()))
+        # return ((diff.total_seconds() < 60) and (message.author == last_message.author))
+        return (message.author == last_message.author)
 
     commands = {
         'fetch_messages': fetch_messages,
