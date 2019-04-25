@@ -54,9 +54,10 @@ class ChatConsumer(WebsocketConsumer):
         try:
             last_message = room.last_2_messages()[1]
         except:
+            print("Hey look, we made it here!")
             return False
         diff = last_message.timestamp - message.timestamp
-        return ((diff.total_seconds() < 10*60) and (message.author == last_message.author))
+        return ((diff.total_seconds() < 60) and (message.author == last_message.author))
 
     commands = {
         'fetch_messages': fetch_messages,
