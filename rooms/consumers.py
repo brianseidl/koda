@@ -50,6 +50,9 @@ class ChatConsumer(WebsocketConsumer):
         }
 
     def append_or_nah(self, message):
+        # TODO (brian): fix this, THEN push to prod
+        return False
+        """
         room = message.room
         try:
             last_message = room.last_2_messages()[1]
@@ -60,6 +63,7 @@ class ChatConsumer(WebsocketConsumer):
         # print((last_message.timestamp, message.timestamp, diff.total_seconds()))
         # return ((diff.total_seconds() < 60) and (message.author == last_message.author))
         return (message.author == last_message.author)
+        """
 
     commands = {
         'fetch_messages': fetch_messages,
