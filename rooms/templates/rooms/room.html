@@ -66,7 +66,7 @@
       if (window.location.protocol == "https:") {
         var ws_scheme = "wss://";
       } else {
-        var ws_scheme = "ws://"
+        var ws_scheme = "ws://";
       };
 
       var chatSocket = new ReconnectingWebSocket(
@@ -102,14 +102,16 @@
       function sendMessage() {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-          'message': message,
-          'command': 'new_message',
-          'from': username,
-          'room_name': roomName
-        }));
-        console.log('attempting to send message');
-        messageInputDom.value = '';
+        if (message != "") {
+          chatSocket.send(JSON.stringify({
+            'message': message,
+            'command': 'new_message',
+            'from': username,
+            'room_name': roomName
+          }));
+          console.log('attempting to send message');
+          messageInputDom.value = '';
+        }
       };
 
       function fetchMessages() {
@@ -120,7 +122,8 @@
       }
 
       function displayMessage(data){
-        if (data["doWeAppendBoss"]){
+        //if (data["doWeAppendBoss"]) TODO (brian): eventually add this back
+        if (doWeAppendBoss(data)){
           appendToPrevious(data);
           console.log("append");
         } else {
@@ -129,10 +132,9 @@
         }
       }
 
-      /** lets keep this just in case shit goes wrong
       function doWeAppendBoss(data){
         return data["author"] == $(".author:last").find("b").html();
-      }*/
+      }
 
       function appendToPrevious(data){
         var prev_message = $(".message:last");
@@ -148,10 +150,9 @@
         var message = data['content'];
         var chatLog = document.getElementById("chat-log-v2");//+= (message + '\n');
         var newChatElement = document.createElement("div");
-        newChatElement.setAttribute("class", "w3-container");
         newChatElement.setAttribute("style", "min-height:50px;");
         newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
-          "<div class=\"w3-right w3-show-inline-block\">" + data["timestamp"] + "</div>" +
+          "<div class=\"w3-container w3-show-inline-block\">" + data["timestamp"] + "</div>" +
           "<div class=\"w3-container w3-leftbar message\" style=\"overflow:hidden;\">" + data["content"] + "</div>";
         document.getElementById("chat-log-v2").appendChild(newChatElement);
 
