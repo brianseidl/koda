@@ -5,6 +5,7 @@ from channels.generic.websocket import WebsocketConsumer
 import json
 from .models import Message, Room
 import re
+from django.utils import timezone
 
 class ChatConsumer(WebsocketConsumer):
 
@@ -45,9 +46,21 @@ class ChatConsumer(WebsocketConsumer):
         return {
             'author': message.author.username,
             'content': message.content,
-            'timestamp': str(message.timestamp),
+            'timestamp': self._parse_timestamp(message.timestamp),
             'doWeAppendBoss': self.append_or_nah(message)
         }
+
+    def _parse_timestamp(self, time):
+        dt = timezone.localtime(timezone.now())
+        month = str(dt.month)
+        day = str(dt.day)
+        year = str(dt.year)
+        hours = dt.hour % 12
+        if dt.hour > 12:
+            suff = "pm"
+        else:
+            suff = "am"
+        return ("{:s}/{:s}/{:s} @ {:d}:{:02d} {:s}".format(day, month, year, hours, dt.minute, suff))
 
     def append_or_nah(self, message):
         # TODO (brian): fix this, THEN push to prod
