@@ -1,4 +1,4 @@
-{% extends "rooms/base.html" %}
+{% extends "rooms/base_room.html" %}
 {% load static %}
 
 {% block scripts %}
@@ -11,15 +11,25 @@
   <div class="w3-sidebar w3-bar-block w3-light-gray" style="z-index: 3; width: 270px; display: block;" id="mySidebar">
     <div id="menuTut" class="myMenu" style="display: block;">
       <div class="w3-container">
-        <h3>ROOMS</h3>
+        <h3 style="text-transform:uppercase;">{{ type }}s</h3>
       </div>
-      {% for room in rooms %}
-        {% if room.id == room_id %}
-          <a href="{% url 'rooms:detail' room_id=room.id %}" class="w3-bar-item w3-button w3-green">{{ room.name }}</a>
-        {% else %}
-          <a href="{% url 'rooms:detail' room_id=room.id %}" class="w3-bar-item w3-button">{{ room.name }}</a>
-        {% endif %}
-      {% endfor %}
+      {% if type == "room" %}
+        {% for room in rooms %}
+          {% if room.id == room_id %}
+            <a href="{% url 'rooms:detail_room' room_id=room.id %}" class="w3-bar-item w3-button w3-green">{{ room.name }}</a>
+          {% else %}
+            <a href="{% url 'rooms:detail_room' room_id=room.id %}" class="w3-bar-item w3-button">{{ room.name }}</a>
+          {% endif %}
+        {% endfor %}
+      {% elif type == "chat" %}
+        {% for room in rooms %}
+          {% if room.id == room_id %}
+            <a href="{% url 'rooms:detail_chat' chat_id=room.id %}" class="w3-bar-item w3-button w3-green">{{ room|get_other_member:user }}</a>
+          {% else %}
+            <a href="{% url 'rooms:detail_chat' chat_id=room.id %}" class="w3-bar-item w3-button">{{ room|get_other_member:user }}</a>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
 {% endblock %}
@@ -152,7 +162,7 @@
         var newChatElement = document.createElement("div");
         newChatElement.setAttribute("style", "min-height:50px;");
         newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
-          "<div class=\"w3-container w3-show-inline-block\">" + data["timestamp"] + "</div>" +
+          "<div class=\"w3-container w3-show-inline-block w3-text-dark-gray\">" + data["timestamp"] + "</div>" +
           "<div class=\"w3-container w3-leftbar message\" style=\"overflow:hidden;\">" + data["content"] + "</div>";
         document.getElementById("chat-log-v2").appendChild(newChatElement);
 
