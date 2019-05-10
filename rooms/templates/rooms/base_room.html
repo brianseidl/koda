@@ -1,0 +1,26 @@
+{% extends "rooms/base.html" %}
+
+{% block scripts %}
+  {{ block.super }}
+{% endblock %}
+
+{% block leftnav %}
+  <div class="w3-sidebar w3-bar-block w3-light-gray" style="z-index: 3; width: 270px; display: block;" id="mySidebar">
+    <div id="menuTut" class="myMenu" style="display: block;">
+      <div class="w3-container">
+        <h3 style="text-transform:uppercase;">{{ type }}s</h3>
+      </div>
+      {% for room in rooms %}
+        {% if type == "room" %}
+          <a href="{% url 'rooms:detail_room' room_id=room.id %}" class="w3-bar-item w3-button">{{ room.name }}</a>
+        {% elif type == "chat" %}
+          <a href="{% url 'rooms:detail_chat' chat_id=room.id %}" class="w3-bar-item w3-button">{{ room|get_other_member:user }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;"></div>
+{% endblock %}

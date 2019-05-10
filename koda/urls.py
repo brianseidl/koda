@@ -18,8 +18,7 @@ from django.urls import include, path
 from .views import BaseView
 
 urlpatterns = [
-	path('', BaseView.as_view(), name='homepage'),
-    path('rooms/', include('rooms.urls')),
+    path('', include('rooms.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

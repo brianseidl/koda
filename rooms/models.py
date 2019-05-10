@@ -9,6 +9,7 @@ from online_users.models import OnlineUserActivity
 class Room(models.Model):
     name = models.CharField(max_length=100)
     users = models.ManyToManyField(User, through='RoomUser')
+    rtype = models.CharField(max_length=10, default="room")
 
     def add_user(self, user):
         cu = RoomUsers(user=user, room=self)
@@ -22,6 +23,7 @@ class Room(models.Model):
     def last_10_messages(self):
         return self.message_set.order_by('-timestamp').all()
 
+    # TODO (brian): I don't think I use this anymore
     def last_2_messages(self):
         return self.message_set.order_by('-timestamp').all()[:2]
 

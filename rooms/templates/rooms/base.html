@@ -1,22 +1,39 @@
-{% extends "koda/base.html" %}
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>KODA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}"/>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-green.css">
+  {% block scripts %}{% endblock %}
+</head>
+<body>
 
-{% block scripts %}
-  {{ block.super }}
-{% endblock %}
-
-{% block leftnav %}
-  <div class="w3-sidebar w3-bar-block w3-light-gray" style="z-index: 3; width: 270px; display: block;" id="mySidebar">
-    <div id="menuTut" class="myMenu" style="display: block;">
-      <div class="w3-container">
-        <h3>ROOMS</h3>
-      </div>
-      {% for room in rooms %}
-        <a href="{% url 'rooms:detail' room_id=room.id %}" class="w3-bar-item w3-button">{{ room.name }}</a>
-      {% endfor %}
-    </div>
+<!--Top-->
+<div class="w3-top">
+  <div class="w3-row w3-white w3-padding">
+    <div class="w3-half" style="margin:4px 0 6px 0"><img src="{% static 'images/koda.png' %}"></div>
+    <div class="w3-half w3-margin-top w3-wide"><div class="w3-right">KNOCKOFF DISCORD APPLICATION</div></div>
   </div>
-{% endblock %}
+  <div class="w3-bar w3-theme w3-large" style="z-index:4;">
+    <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:homepage' %}">HOME</a>
+    <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:base_room' %}">ROOMS</a>
+    <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:base_chat' %}">DIRECT MESSAGES</a>
+    {% if auth_user %}
+      <a class="w3-bar-item w3-right w3-button w3-hover-white w3-padding-16" href="{% url 'logout' %}">LOGOUT</a>
+      <span class="w3-bar-item w3-right w3-padding-16" style="text-transform:uppercase;">WELCOME {{ user.first_name }}</span>
+    {% else %}
+      <a class="w3-bar-item w3-right w3-button w3-hover-white w3-padding-16" href="{% url 'login' %}">LOGIN</a>
+    {% endif %}
+  </div>
+</div>
 
-{% block content %}
-  <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;"></div>
-{% endblock %}
+{% block leftnav %}{% endblock %}
+{% block rightbar %}{% endblock %}
+{% block content %}{% endblock %}
+
+</body>
+</html>
