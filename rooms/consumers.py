@@ -35,7 +35,15 @@ class ChatConsumer(WebsocketConsumer):
         }
         return self.send_chat_message(content)
 
+    def typing(self, data):
+        content = {
+            'command': 'typing',
+            'username': data["from"]
+        }
+        self.send_chat_message(content)
+
     def cleanhtml(self, raw_html):
+        """ remove any xss attack attempt """
         cleanr = re.compile('<.*?>')
         cleantext = re.sub(cleanr, '', raw_html)
         return cleantext
@@ -69,7 +77,8 @@ class ChatConsumer(WebsocketConsumer):
 
     commands = {
         'fetch_messages': fetch_messages,
-        'new_message': new_message
+        'new_message': new_message,
+        'typing': typing,
     }
 
     def connect(self):
