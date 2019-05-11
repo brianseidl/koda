@@ -1,40 +1,52 @@
-# koda
+# KODA
+Knockoff Discord Application by Brian Seidl and Grant Clark
 
-## Setting up for local development
+## Production
+If you just want to check out the final product, it is currently deployed at https://koda-app.herokuapp.com/.
 
-#### Requirememnts
-- python 3
-- Make sure you have a version of redis running on port 6379
+#### Disclaimer
 
-#### Setup
+You will not be able to view or send messages if you do not have a production koda account.  For more information on creating an account, please contact one of the developers.
 
-Make a python3 virtual environment in the root of the project
+## Local development
+
+### Requirememnts
+- python 3 and pip
+- virtualenv (highly recommended)
+- Make sure you have redis running on port 6379 (not going to show you how to use redis)
+
+### Setup
+
+Make a python 3 virtual environment and activate it. (Not mandatory but highly recommended)
 ```bash
 $ virtualenv -p /usr/bin/python3.6 venv
+$ source venv/bin/activate
 ```
 
-Install required packages
+Before you bring up your development server, you need to install required python modules and packages, enable local settings, and migrate you local database.
 ```bash
 $ pip install -r requirements.txt
-```
-
-Tell django what settings you want to use
-```bash
-$ export DJANGO_SETTINGS_MODULE=koda.settings.local
-```
-
-Migrate database
-```bash
+$ export DJANGO_SETTINGS_MODULE=koda.settings.local  #Put this in your shell's startup script
 $ python manage.py migrate
 ```
 
-Create a super user for yourself
+Next you will need to create a super user for yourself to have to ability to access the admin pages.
 ```bash
 $ python manage.py createsuperuser
 ```
 
-#### Running the development server
+### Running the development server
 
 ```bash
 $ python manage.py runserver
 ```
+
+Your version of koda will be running on http://localhost:8000/, but you are not done yet.  You will need to add users and create rooms/chats.  You can do so by accessing the admin page at http://localhost:8000/admin/.
+
+### Important
+
+Just some extra information for local development and what not.
+
+- When you add users, make sure you also add the user's first name.  The first and last name is an optional field in the django User model, but we use the first name field in this application.
+
+- A direct message is just a room with two people.  This was done to save time. To make a direct message, create a room and change the rtype value from `room` to `chat`.  So technically you can have a direct message with more than two people, just don't do it.  This is why I am the admin in production and you are not.
