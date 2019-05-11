@@ -60,11 +60,14 @@
 {% block content %}
   <div class="w3-main w3-container" style="margin-left:270px!important;margin-top:117px;margin-right:270px;">
 
-<div id="chat-log-v2" class="w3-panel w3-border" style="height: calc(100vh - 206px);overflow:scroll;postion:fixed;"></div>
+<div id="chat-log-v2" class="w3-panel w3-border" style="height: calc(100vh - 230px);overflow-y:scroll;postion:fixed;"></div>
 
     <div class="w3-section">
       <input id="chat-message-input" class="w3-input w3-border" type="text" placeholder="new message" />
     </div>
+
+    <div id="typing"></div>
+
     <script type="text/javascript">
       // TODO (brian): move this sucker to a js file
       // while still being able to pass in context data
@@ -95,6 +98,8 @@
           }
         } else if (data['command'] === 'new_message'){
           displayMessage(data['message']);
+        } else if (data['command'] === 'typing'){
+          displayTyping(data['username']);
         }
       };
 
@@ -108,6 +113,25 @@
           sendMessage();
         }
       };
+
+      $("#chat-message-input").keypress(function(){
+        chatSocket.send(JSON.stringify({
+          'command': 'typing',
+          'from': username,
+        }));
+      })
+
+      function displayTyping(typername){
+        // This is bad. It starts to clear after the first
+        // massage goes away.  It should not clear until
+        // 3 secounds after the last char was typed.
+        if (typername != username){
+          $("#typing").html("... " + typername + " is typing");
+          setTimeout(function(){
+              $("#typing").html("");
+          }, 3000);
+        }
+      }
 
       function sendMessage() {
         var messageInputDom = document.querySelector('#chat-message-input');
