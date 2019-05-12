@@ -2,9 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from online_users.models import OnlineUserActivity
 
-# Create your models here.
-# Fun fact. Django creates an id/pk column for every
-# model so we don't need to create an id column
 
 class Room(models.Model):
     name = models.CharField(max_length=100)
@@ -19,13 +16,8 @@ class Room(models.Model):
     def members(self):
         return self.users.all()
 
-    # TODO (brian): change name for method to get_all_messages
-    def last_10_messages(self):
+    def load_messages(self):
         return self.message_set.order_by('-timestamp').all()
-
-    # TODO (brian): I don't think I use this anymore
-    def last_2_messages(self):
-        return self.message_set.order_by('-timestamp').all()[:2]
 
     def who_is_online(self):
         # TODO (brian): This is so disgusting but it works I guess
