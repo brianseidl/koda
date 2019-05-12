@@ -9,7 +9,7 @@ class Room(models.Model):
     rtype = models.CharField(max_length=10, default="room")
 
     def add_user(self, user):
-        cu = RoomUsers(user=user, room=self)
+        cu = RoomUser(user=user, room=self)
         cu.save()
 
     @property
