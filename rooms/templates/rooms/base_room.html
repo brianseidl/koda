@@ -1,14 +1,16 @@
 {% extends "rooms/base.html" %}
+{% load static %}
 
 {% block scripts %}
   {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/room.css' %}">
 {% endblock %}
 
 {% block leftnav %}
-  <div class="w3-sidebar w3-bar-block w3-light-gray" style="z-index: 3; width: 270px; display: block;" id="mySidebar">
-    <div id="menuTut" class="myMenu" style="display: block;">
+  <div class="w3-sidebar w3-bar-block w3-light-gray" id="left-sidebar">
+    <div id="menuTut" class="myMenu">
       <div class="w3-container">
-        <h3 style="text-transform:uppercase;">{{ type }}s</h3>
+        <h3 id="type">{{ type }}s</h3>
       </div>
       {% for room in rooms %}
         {% if type == "room" %}
@@ -22,5 +24,5 @@
 {% endblock %}
 
 {% block content %}
-  <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;"></div>
+  <div class="w3-main w3-container" id="main"></div>
 {% endblock %}

@@ -121,10 +121,10 @@ function displayNewMessage(data) {
     var message = data['content'];
     var chatLog = document.getElementById("chat-log-v2");//+= (message + '\n');
     var newChatElement = document.createElement("div");
-    newChatElement.setAttribute("style", "min-height:50px;");
+    newChatElement.setAttribute("class", "whole-message");
     newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
         "<div class=\"w3-container w3-show-inline-block w3-text-dark-gray\">" + data["timestamp"] + "</div>" +
-        "<div class=\"w3-container w3-leftbar message\" style=\"overflow:hidden;\">" + data["content"] + "</div>";
+        "<div class=\"w3-container w3-leftbar message\">" + data["content"] + "</div>";
     document.getElementById("chat-log-v2").appendChild(newChatElement);
 
     // scroll to bottom every time a new message is added to bottom
