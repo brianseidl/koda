@@ -2,9 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from online_users.models import OnlineUserActivity
 
-# Create your models here.
-# Fun fact. Django creates an id/pk column for every
-# model so we don't need to create an id column
 
 class Room(models.Model):
     name = models.CharField(max_length=100)
@@ -12,23 +9,38 @@ class Room(models.Model):
     rtype = models.CharField(max_length=10, default="room")
 
     def add_user(self, user):
-        cu = RoomUsers(user=user, room=self)
+        cu = RoomUser(user=user, room=self)
         cu.save()
 
     @property
     def members(self):
         return self.users.all()
 
-    # TODO (brian): change name for method to get_all_messages
-    def last_10_messages(self):
+    def load_messages(self):
         return self.message_set.order_by('-timestamp').all()
 
-    # TODO (brian): I don't think I use this anymore
-    def last_2_messages(self):
-        return self.message_set.order_by('-timestamp').all()[:2]
-
     def who_is_online(self):
-        # TODO (brian): This is so disgusting but it works I guess
+        """
+        Gross hack to determine who from the chat room is online.
+        TODO (brian): Eventually convert this feature via WebSocket
+            connection via consumers.py.  Don't have time to fix now.
+
+        Precondition:
+            Detail Room/Chat view is called
+
+        Postcondition:
+            2 tuples will be return containing the status of their
+            activity within the last 15 minutes
+
+        Parameters:
+            None
+
+        Returns:
+            (list, list): tuple of 2 lists.  The first list will contain
+                a list of people in the room active within the last 15
+                minutes.  The second list are members in the room who
+                were not active within the last 15 minutes.
+        """
         weird_user_objects = OnlineUserActivity.get_user_activities()
         all_online_users = [item.user for item in weird_user_objects]
         online_users = []

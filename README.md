@@ -13,7 +13,8 @@ You will not be able to view or send messages if you do not have a production ko
 ### Requirememnts
 - python 3 and pip
 - virtualenv (highly recommended)
-- Make sure you have redis running on port 6379 (not going to show you how to use redis)
+- Make sure you have redis running on port 6379
+    - For more information on redis, visit https://redis.io/topics/quickstart.
 
 ### Setup
 
@@ -26,7 +27,7 @@ $ source venv/bin/activate
 Before you bring up your development server, you need to install required python modules and packages, enable local settings, and migrate you local database.
 ```bash
 $ pip install -r requirements.txt
-$ export DJANGO_SETTINGS_MODULE=koda.settings.local  #Put this in your shell's startup script
+$ export DJANGO_SETTINGS_MODULE=koda.settings.local  #put this in your shell's startup script
 $ python manage.py migrate
 ```
 
@@ -35,7 +36,7 @@ Next you will need to create a super user for yourself to have to ability to acc
 $ python manage.py createsuperuser
 ```
 
-### Running the development server
+### Running the Development Server
 
 ```bash
 $ python manage.py runserver
@@ -43,10 +44,19 @@ $ python manage.py runserver
 
 Your version of koda will be running on http://localhost:8000/, but you are not done yet.  You will need to add users and create rooms/chats.  You can do so by accessing the admin page at http://localhost:8000/admin/.
 
+### Running the Tests
+
+- Test cases can be found in the module `rooms.tests`.
+- To run the tests, do the following:
+
+    ```bash
+    $ python manage.py test
+    ```
+
 ### Important
 
 Just some extra information for local development and what not.
 
 - When you add users, make sure you also add the user's first name.  The first and last name is an optional field in the django User model, but we use the first name field in this application.
 
-- A direct message is just a room with two people.  This was done to save time. To make a direct message, create a room and change the rtype value from `room` to `chat`.  So technically you can have a direct message with more than two people, just don't do it.  This is why I am the admin in production and you are not.
+- A direct message is just a room with two people.  This was done to save time. To make a direct message, create a room and change the `rtype` value from `room` to `chat`.  So technically you can have a direct message with more than two people, just don't do it.  This is why I am the admin in production and you are not.

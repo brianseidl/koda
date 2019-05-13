@@ -1,1 +1,4 @@
-/* TODO (brian) */
+/* Remove blue outline for chrome */
+input:focus {
+    outline:0;
+}
