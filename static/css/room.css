@@ -1,4 +1,45 @@
-/* Remove blue outline for chrome */
+/* css for base_room.html and detail_room.html */
+
 input:focus {
-    outline:0;
+  outline:0;
+}
+
+#type {
+  text-transform: uppercase;
+}
+
+#chat-log-v2 {
+  height: calc(100vh - 217px);
+  overflow-y: scroll;
+}
+
+.whole-message {
+  min-height: 50px;
+}
+
+.message {
+  overflow: hidden;
+}
+
+#left-sidebar {
+  z-index: 3;
+  width: 270px;
+  display: block;
+}
+
+#right-sidebar {
+  z-index: 3;
+  width: 270px;
+  display: block;
+  right: 0;
+}
+
+#main {
+  margin-left: 270px !important;
+  margin-top: 117px;
+  margin-right: 270px;
+}
+
+.myMenu {
+  display: block;
 }
