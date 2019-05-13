@@ -15,7 +15,7 @@ class BaseView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user"] = self.request.user
-        context["auth_user"] = isinstance(context["user"], User)
+        context["logged_in"] = isinstance(context["user"], User)
         return context
 
 
@@ -66,6 +66,12 @@ class BaseChatView(LoginRequiredMixin, BaseView):
     def get_other_member(room, user):
         """
         View method to return the other member of the room.
+
+        Precondition:
+            room is a chat and contains only 2 users
+
+        Postcondition:
+            other user of the chat/room is returned
 
         Args:
             room (Room): room in which you want to find the other user

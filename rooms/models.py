@@ -20,7 +20,27 @@ class Room(models.Model):
         return self.message_set.order_by('-timestamp').all()
 
     def who_is_online(self):
-        # TODO (brian): This is so disgusting but it works I guess
+        """
+        Gross hack to determine who from the chat room is online.
+        TODO (brian): Eventually convert this feature via WebSocket
+            connection via consumers.py.  Don't have time to fix now.
+
+        Precondition:
+            Detail Room/Chat view is called
+
+        Postcondition:
+            2 tuples will be return containing the status of their
+            activity within the last 15 minutes
+
+        Parameters:
+            None
+
+        Returns:
+            (list, list): tuple of 2 lists.  The first list will contain
+                a list of people in the room active within the last 15
+                minutes.  The second list are members in the room who
+                were not active within the last 15 minutes.
+        """
         weird_user_objects = OnlineUserActivity.get_user_activities()
         all_online_users = [item.user for item in weird_user_objects]
         online_users = []

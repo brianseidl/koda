@@ -22,7 +22,7 @@
     <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:homepage' %}">HOME</a>
     <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:base_room' %}">ROOMS</a>
     <a class="w3-bar-item w3-button w3-hover-white w3-padding-16" href="{% url 'rooms:base_chat' %}">DIRECT MESSAGES</a>
-    {% if auth_user %}
+    {% if logged_in %}
       <a class="w3-bar-item w3-right w3-button w3-hover-white w3-padding-16" href="{% url 'logout' %}">LOGOUT</a>
       <span class="w3-bar-item w3-right w3-padding-16" style="text-transform:uppercase;">WELCOME {{ user.first_name }}</span>
     {% else %}

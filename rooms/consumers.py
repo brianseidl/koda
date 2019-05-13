@@ -60,7 +60,7 @@ class ChatConsumer(WebsocketConsumer):
         room = Room.objects.filter(name=room_name)[0]
         message = Message.objects.create(
             author=author_user,
-            content=self._cleanhtml(data['message']),
+            content=self._clean_html(data['message']),
             room=room)
         content = {
             'command': 'new_message',
@@ -91,7 +91,7 @@ class ChatConsumer(WebsocketConsumer):
         }
         self.send_chat_message(content)
 
-    def _cleanhtml(self, raw_html):
+    def _clean_html(self, raw_html):
         """
         Helpoer function to remove any xss attack attempt
 

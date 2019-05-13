@@ -121,15 +121,33 @@
         }));
       })
 
-      function displayTyping(typername){
-        // This is bad. It starts to clear after the first
-        // massage goes away.  It should not clear until
-        // 3 secounds after the last char was typed.
-        if (typername != username){
-          $("#typing").html("... " + typername + " is typing");
-          setTimeout(function(){
-              $("#typing").html("");
-          }, 3000);
+      var clearInterval = 900; //0.9s
+      var clearTimerId;
+      var typingUsers = [];
+
+      function displayTyping(typerName){
+        if (typerName != username){
+          if (typingUsers.indexOf(typerName) >= 0){
+            // typerName is in typing users
+          } else {
+            // typerName is not in typing users
+            // add typerName to typing users
+            typingUsers.push(typerName);
+          }
+
+          if (typingUsers.length > 1){
+            $("#typing").html("multiple people are typing");
+          } else {
+            $("#typing").html(typerName + " is typing");
+          }
+
+          // restart timeout timer
+          clearTimeout(clearTimerId);
+          clearTimerId = setTimeout(function (){
+            // clear user is typing message
+            $("#typing").html("");
+            typingUsers.pop(typerName);
+          }, clearInterval);
         }
       }
 
@@ -143,7 +161,6 @@
             'from': username,
             'room_name': roomName
           }));
-          console.log('attempting to send message');
           messageInputDom.value = '';
         }
       };
@@ -156,13 +173,10 @@
       }
 
       function displayMessage(data){
-        //if (data["doWeAppendBoss"]) TODO (brian): eventually add this back
         if (doWeAppendBoss(data)){
           appendToPrevious(data);
-          console.log("append");
         } else {
           displayNewMessage(data);
-          console.log("new message");
         }
       }
 
@@ -173,7 +187,6 @@
       function appendToPrevious(data){
         var prev_message = $(".message:last");
         prev_message.append("<br>" + data["content"]);
-        console.log(prev_message);
 
         // scroll to bottom every time a new message is added to bottom
         var chatLog = document.getElementById("chat-log-v2");
