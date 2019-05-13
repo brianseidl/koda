@@ -1,1 +1,4 @@
-/* TODO (brian): hide that weird shit that chrome does to inputs*/
+/* Remove blue outline for chrome */
+input:focus {
+    outline:0;
+}
