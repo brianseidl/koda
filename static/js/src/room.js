@@ -43,11 +43,12 @@ $("#chat-message-input").keypress(function(){
         'command': 'typing',
         'from': username,
     }));
-})
+});
 
 var clearInterval = 900; //0.9s
 var clearTimerId;
 var typingUsers = [];
+var hostname = window.location.origin;
 
 function displayTyping(typerName){
     if (typerName != username){
@@ -60,9 +61,9 @@ function displayTyping(typerName){
         }
 
         if (typingUsers.length > 1){
-            $("#typing").html("multiple people are typing");
+            $("#typing").html("<img src=\"" + hostname + "/static/images/dots.gif\" style=\"padding-right:5px\">multiple people are typing");
         } else {
-            $("#typing").html(typerName + " is typing");
+            $("#typing").html("<img src=\"" + hostname + "/static/images/dots.gif\" style=\"padding-right:5px\">" + typerName + " is typing");
         }
 
         // restart timeout timer
