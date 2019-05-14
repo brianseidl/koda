@@ -1,5 +1,10 @@
 {#% extends "base_generic.html" %#}
 
+{% load static %}
+{% block scripts %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block content %}
 
 {% if form.errors %}
@@ -17,24 +22,21 @@
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
-<table>
+<center>
+  <table>
+  <tr>
+    <td>{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+  </tr>
 
-<tr>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</tr>
+  <tr>
+    <td>{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+  </tr>
+  </table>
 
-<tr>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login" />
+<button type="submit">Login</button>
 <input type="hidden" name="next" value="{{ next }}" />
+</center>
 </form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
 {% endblock %}
