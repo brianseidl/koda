@@ -1,10 +1,15 @@
 /* This contains logic of connecting to the chat room via websockets */
+var clearInterval = 900; //0.9s
+var clearTimerId;
+var typingUsers = [];
+var hostname = window.location.origin;
+var bell = document.getElementById('not-discord-bell');
 
 if (window.location.protocol == "https:") {
     var ws_scheme = "wss://";
 } else {
     var ws_scheme = "ws://";
-};
+}
 
 var chatSocket = new ReconnectingWebSocket(
     ws_scheme + window.location.host +
@@ -22,6 +27,9 @@ chatSocket.onmessage = function(e) {
         }
     } else if (data['command'] === 'new_message'){
         displayMessage(data['message']);
+        if (data["message"]["author"] != username){
+            bell.play();
+        }
     } else if (data['command'] === 'typing'){
         displayTyping(data['username']);
     }
@@ -44,11 +52,6 @@ $("#chat-message-input").keypress(function(){
         'from': username,
     }));
 });
-
-var clearInterval = 900; //0.9s
-var clearTimerId;
-var typingUsers = [];
-var hostname = window.location.origin;
 
 function displayTyping(typerName){
     if (typerName != username){
@@ -93,7 +96,7 @@ function sendMessage() {
 function fetchMessages() {
     chatSocket.send(JSON.stringify({
         'command': 'fetch_messages',
-        'room_name': roomName,
+        'room_name': roomName, // TODO (brian): this should be room id
     }));
 }
 
@@ -106,12 +109,22 @@ function displayMessage(data){
 }
 
 function doWeAppendBoss(data){
-    return data["author"] == $(".author:last").find("b").html();
+    if (data["author"] == $(".author:last").find("b").html()){
+        // check timestamp of last group of messages
+        var prev_message_timestamp = $(".message:last").attr("timestamp");
+        return (data["timestamp"] - prev_message_timestamp < 600);
+    } else {
+        return false;
+    }
 }
 
 function appendToPrevious(data){
     var prev_message = $(".message:last");
-    prev_message.append("<br>" + data["content"]);
+    var content = data["content"];
+    if (pictureOrNah(content)){
+        content = generatePictureHtml(content);
+    }
+    prev_message.append("<br>" + content);
 
     // scroll to bottom every time a new message is added to bottom
     var chatLog = document.getElementById("chat-log-v2");
@@ -119,15 +132,38 @@ function appendToPrevious(data){
 }
 
 function displayNewMessage(data) {
-    var message = data['content'];
-    var chatLog = document.getElementById("chat-log-v2");//+= (message + '\n');
+    var content = data["content"];
+    if (pictureOrNah(content)){
+        content = generatePictureHtml(content);
+    }
+    var chatLog = document.getElementById("chat-log-v2");
     var newChatElement = document.createElement("div");
     newChatElement.setAttribute("class", "whole-message");
     newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
-        "<div class=\"w3-container w3-show-inline-block w3-text-dark-gray\">" + data["timestamp"] + "</div>" +
-        "<div class=\"w3-container w3-leftbar message\">" + data["content"] + "</div>";
+        "<div class=\"w3-container w3-show-inline-block w3-text-dark-gray time\">" + data["time"] + "</div>" +
+        "<div class=\"w3-container w3-leftbar message\" timestamp=\"" + data["timestamp"] + "\">" + content + "</div>";
+
     document.getElementById("chat-log-v2").appendChild(newChatElement);
+    pictureOrNah(data["content"]);
 
     // scroll to bottom every time a new message is added to bottom
     chatLog.scrollTo(0, chatLog.scrollHeight);
+}
+
+/**
+* Determines if message content is a picture
+*/
+function pictureOrNah(content){
+    var ext = content.split(".").pop();
+    return (["png", "gif", "jpg", "jpeg"].indexOf(content.split(".").pop()) >= 0 &&
+        ["http", "https"].indexOf(content.split("://").shift()) >= 0);
+}
+
+/**
+* generates html for picture messages
+*/
+function generatePictureHtml(content){
+    return "<a href=\"" + content + "\" target=\"_blank\">" + content + "</l>" +
+           "<br>" +
+           "<img src=\"" + content + "\" target=\"_blank\">";
 }

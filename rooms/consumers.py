@@ -133,7 +133,8 @@ class ChatConsumer(WebsocketConsumer):
         return {
             'author': message.author.username,
             'content': message.content,
-            'timestamp': timezone.localtime(message.timestamp).strftime("%A %B %-d, %Y at %-I:%M %p"),
+            'time': timezone.localtime(message.timestamp).strftime("%A %B %-d, %Y at %-I:%M %p"),
+            'timestamp': message.timestamp.timestamp(),
         }
 
     commands = {

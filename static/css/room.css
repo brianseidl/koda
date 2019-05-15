@@ -9,16 +9,19 @@ input:focus {
 }
 
 #chat-log-v2 {
+  min-width: 450px;
   height: calc(100vh - 217px);
   overflow-y: scroll;
+  overflow-x: auto;
 }
 
 .whole-message {
   min-height: 50px;
+  padding-bottom: 10px;
 }
 
 .message {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 #left-sidebar {
@@ -37,9 +40,18 @@ input:focus {
 #main {
   margin-left: 270px !important;
   margin-top: 117px;
-  margin-right: 270px;
+  margin-right: 270px !important;
 }
 
 .myMenu {
   display: block;
+}
+
+.time {
+  font-size: small;
+  position: center;
+}
+
+.author {
+  font-size: large;
 }
