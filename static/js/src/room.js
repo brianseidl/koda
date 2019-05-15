@@ -93,7 +93,7 @@ function sendMessage() {
 function fetchMessages() {
     chatSocket.send(JSON.stringify({
         'command': 'fetch_messages',
-        'room_name': roomName,
+        'room_name': roomName, // TODO (brian): this should be room id
     }));
 }
 
@@ -111,7 +111,11 @@ function doWeAppendBoss(data){
 
 function appendToPrevious(data){
     var prev_message = $(".message:last");
-    prev_message.append("<br>" + data["content"]);
+    var content = data["content"];
+    if (pictureOrNah(content)){
+        content = generatePictureHtml(content);
+    }
+    prev_message.append("<br>" + content);
 
     // scroll to bottom every time a new message is added to bottom
     var chatLog = document.getElementById("chat-log-v2");
@@ -119,15 +123,38 @@ function appendToPrevious(data){
 }
 
 function displayNewMessage(data) {
-    var message = data['content'];
-    var chatLog = document.getElementById("chat-log-v2");//+= (message + '\n');
+    var content = data["content"];
+    if (pictureOrNah(content)){
+        content = generatePictureHtml(content);
+    }
+    var chatLog = document.getElementById("chat-log-v2");
     var newChatElement = document.createElement("div");
     newChatElement.setAttribute("class", "whole-message");
     newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
         "<div class=\"w3-container w3-show-inline-block w3-text-dark-gray\">" + data["timestamp"] + "</div>" +
-        "<div class=\"w3-container w3-leftbar message\">" + data["content"] + "</div>";
+        "<div class=\"w3-container w3-leftbar message\">" + content + "</div>";
+
     document.getElementById("chat-log-v2").appendChild(newChatElement);
+    pictureOrNah(data["content"]);
 
     // scroll to bottom every time a new message is added to bottom
     chatLog.scrollTo(0, chatLog.scrollHeight);
+}
+
+/**
+* Determines if message content is a picture
+*/
+function pictureOrNah(content){
+    var ext = content.split(".").pop();
+    return (["png", "gif", "jpg", "jpeg"].indexOf(content.split(".").pop()) >= 0 &&
+        ["http", "https"].indexOf(content.split("://").shift()) >= 0);
+}
+
+/**
+* generates html for picture messages
+*/
+function generatePictureHtml(content){
+    return "<a href=\"" + content + "\" target=\"_blank\">" + content + "</l>" +
+           "<br>" +
+           "<img src=\"" + content + "\" target=\"_blank\">";
 }

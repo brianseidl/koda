@@ -11,6 +11,7 @@ input:focus {
 #chat-log-v2 {
   height: calc(100vh - 217px);
   overflow-y: scroll;
+  overflow-x: auto;
 }
 
 .whole-message {
@@ -18,7 +19,7 @@ input:focus {
 }
 
 .message {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 #left-sidebar {
