@@ -1,10 +1,15 @@
 /* This contains logic of connecting to the chat room via websockets */
+var clearInterval = 900; //0.9s
+var clearTimerId;
+var typingUsers = [];
+var hostname = window.location.origin;
+var bell = document.getElementById('not-discord-bell');
 
 if (window.location.protocol == "https:") {
     var ws_scheme = "wss://";
 } else {
     var ws_scheme = "ws://";
-};
+}
 
 var chatSocket = new ReconnectingWebSocket(
     ws_scheme + window.location.host +
@@ -22,6 +27,9 @@ chatSocket.onmessage = function(e) {
         }
     } else if (data['command'] === 'new_message'){
         displayMessage(data['message']);
+        if (data["message"]["author"] != username){
+            bell.play();
+        }
     } else if (data['command'] === 'typing'){
         displayTyping(data['username']);
     }
@@ -44,11 +52,6 @@ $("#chat-message-input").keypress(function(){
         'from': username,
     }));
 });
-
-var clearInterval = 900; //0.9s
-var clearTimerId;
-var typingUsers = [];
-var hostname = window.location.origin;
 
 function displayTyping(typerName){
     if (typerName != username){
@@ -106,7 +109,13 @@ function displayMessage(data){
 }
 
 function doWeAppendBoss(data){
-    return data["author"] == $(".author:last").find("b").html();
+    if (data["author"] == $(".author:last").find("b").html()){
+        // check timestamp of last group of messages
+        var prev_message_timestamp = $(".message:last").attr("timestamp");
+        return (data["timestamp"] - prev_message_timestamp < 600);
+    } else {
+        return false;
+    }
 }
 
 function appendToPrevious(data){
@@ -131,8 +140,8 @@ function displayNewMessage(data) {
     var newChatElement = document.createElement("div");
     newChatElement.setAttribute("class", "whole-message");
     newChatElement.innerHTML = "<div class=\"w3-show-inline-block author\"><b>" + data["author"] + "</b></div>" +
-        "<div class=\"w3-container w3-show-inline-block w3-text-dark-gray\">" + data["timestamp"] + "</div>" +
-        "<div class=\"w3-container w3-leftbar message\">" + content + "</div>";
+        "<div class=\"w3-container w3-show-inline-block w3-text-dark-gray time\">" + data["time"] + "</div>" +
+        "<div class=\"w3-container w3-leftbar message\" timestamp=\"" + data["timestamp"] + "\">" + content + "</div>";
 
     document.getElementById("chat-log-v2").appendChild(newChatElement);
     pictureOrNah(data["content"]);
