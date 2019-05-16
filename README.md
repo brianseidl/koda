@@ -59,4 +59,4 @@ Just some extra information for local development and what not.
 
 - When you add users, make sure you also add the user's first name.  The first and last name is an optional field in the django User model, but we use the first name field in this application.
 
-- A direct message is just a room with two people.  This was done to save time. To make a direct message, create a room and change the `rtype` value from `room` to `chat`.  So technically you can have a direct message with more than two people, just don't do it.  This is why I am the admin in production and you are not.
+- A direct message is just a room with two people.  This was done to save time. To make a direct message, create a room and change the `rtype` value from `room` to `chat`.  So technically you can have a direct message with more than two people, just don't do it.  This is why I am the admin in production.
