@@ -55,7 +55,6 @@ class TestBaseRoomView(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_get_context_data(self):
-        # TODO (brian): test for different cases here
         """ Test get_context_data for user who is logged in """
         request = self.rf.get("room/")
         request.user = self.user
@@ -124,8 +123,7 @@ class TestBaseChatView(TestCase):
     I just want to point out that there must be 2 users in a chat room.
     So before you get all triggered and what not that there are no test cases 
     for this, it's because I know that It will break and I dont have time
-    to make chats more robust. Only the admin can configure rooms and chats,
-    and I'm the admin in production, so ... LIGMA.
+    to make chats more robust. Only the admin can configure rooms and chats.
     """
     def setUp(self):
         self.rf = RequestFactory()
@@ -152,7 +150,6 @@ class TestBaseChatView(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_get_context_data(self):
-        # TODO (brian): test for different cases here
         """ Test get_context_data for user who is logged in """
         request = self.rf.get("chat/")
         request.user = self.user

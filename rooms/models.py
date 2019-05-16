@@ -32,7 +32,7 @@ class Room(models.Model):
             2 tuples will be return containing the status of their
             activity within the last 15 minutes
 
-        Parameters:
+        Args:
             None
 
         Returns:

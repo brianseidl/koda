@@ -258,7 +258,13 @@ function displayNewMessage(data) {
 }
 
 /**
-* Determines if message content is a picture
+Determines if message content is a picture.
+
+Precontition:
+    Message is in process of being displayed.
+
+Postcondition:
+    Return true if is photo, else false.
 */
 function pictureOrNah(content){
     var ext = content.split(".").pop();
@@ -267,7 +273,13 @@ function pictureOrNah(content){
 }
 
 /**
-* Generates html for picture messages
+Generates html for picture messages
+
+Precondition:
+    Message is confirmed a photo
+
+Postcondition:
+    Photo htnml template is returned.
 */
 function generatePictureHtml(content){
     return "<a href=\"" + content + "\" target=\"_blank\">" + content + "</l>" +

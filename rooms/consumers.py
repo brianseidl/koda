@@ -20,7 +20,7 @@ class ChatConsumer(WebsocketConsumer):
         Postcondition:
             User gets sent all previous messages from the room
 
-        Paremeters:
+        Args:
             data (dict): data sent from client
 
         Returns:
@@ -48,7 +48,7 @@ class ChatConsumer(WebsocketConsumer):
             The message is saved to the database and sent to
             all users connected on the server.
 
-        Parameters:
+        Args:
             data (dict): data send from client
 
         Returns:
@@ -79,7 +79,7 @@ class ChatConsumer(WebsocketConsumer):
         Postcondition:
             Other users are notified that said user is typing.
 
-        Parameters:
+        Args:
             data (dict): data being send from client
 
         Returns:
@@ -95,7 +95,7 @@ class ChatConsumer(WebsocketConsumer):
         """
         Helpoer function to remove any xss attack attempt
 
-        Parameters:
+        Args:
             raw_html (str): string in which you want html removed
 
         Returns:
@@ -112,7 +112,7 @@ class ChatConsumer(WebsocketConsumer):
         """
         Helper method to convert a group of messages to json
 
-        Parameters:
+        Args:
             messages (list): list of Message objects to be converted to json/dict
 
         Returns:
@@ -124,7 +124,7 @@ class ChatConsumer(WebsocketConsumer):
         """
         Helper function to convert a single message to json
 
-        Parameters:
+        Args:
             message (Message): Message object to be converted to json/dict
 
         Returns:
@@ -181,7 +181,7 @@ class ChatConsumer(WebsocketConsumer):
         Postconditions:
             Message sent to everyone connected to room
 
-        Parameters:
+        Args:
             message (dict): message in json form
 
         Returns:
@@ -205,7 +205,7 @@ class ChatConsumer(WebsocketConsumer):
         Postconditions:
             Message sent to user.
 
-        Parameters:
+        Args:
             message (dict): message to be sent to user
 
         Returns:
