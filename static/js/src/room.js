@@ -25,6 +25,10 @@ chatSocket.onmessage = function(e) {
         for (let i=0; i<data['messages'].length; i++) {
             displayMessage(data['messages'][i]);
         }
+        setTimeout(function(){
+            var chatLog = document.getElementById("chat-log-v2");
+            chatLog.scrollTo(0, chatLog.scrollHeight)
+        }, 20);
     } else if (data['command'] === 'new_message'){
         displayMessage(data['message']);
         if (data["message"]["author"] != username){
