@@ -30,6 +30,7 @@ $ pip install -r requirements.txt
 $ export DJANGO_SETTINGS_MODULE=koda.settings.local  #put this in your shell's startup script
 $ python manage.py migrate
 ```
+* Note. You may run into issues with pip installing psycopg2 and psycopg2-binary.  You do not need this for local development.  If you run into these errors, use our requirements-local.txt.
 
 Next you will need to create a super user for yourself to have to ability to access the admin pages.
 ```bash
