@@ -45,7 +45,7 @@ $ python manage.py runserver
 
 Your version of koda will be running on http://localhost:8000/, but you are not done yet.  You will need to add users and create rooms/chats.  You can do so by accessing the admin page at http://localhost:8000/admin/.
 
-### Running the Tests
+## Running the Tests
 
 - Test cases can be found in the module `rooms.tests`.
 - To run the tests, do the following:
@@ -54,7 +54,7 @@ Your version of koda will be running on http://localhost:8000/, but you are not 
     $ python manage.py test
     ```
 
-### Important
+## Important
 
 Just some extra information for local development and what not.
 
