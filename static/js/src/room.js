@@ -273,10 +273,10 @@ function pictureOrNah(content){
 }
 
 /**
-Generates html for picture messages
+Generates html for picture messages.
 
 Precondition:
-    Message is confirmed a photo
+    Message is confirmed a photo.
 
 Postcondition:
     Photo htnml template is returned.
